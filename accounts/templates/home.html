@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+<h1>Protected page</h1>
+
+<p>Hello {{ request.user.username }}</p>
+
+<a href="/logout/">Logout</a>
+</body>
