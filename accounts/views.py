@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 
 def login_view(request: HttpRequest):
+    if request.user.is_authenticated:
+        return redirect("home")
+
     error = None
 
     if request.method == "POST":
