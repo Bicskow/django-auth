@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import HttpRequest
 
+from .forms import RegisterForm
+
 def login_view(request: HttpRequest):
     if request.user.is_authenticated:
         return redirect("home")
@@ -33,3 +35,18 @@ def home(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+def registration(request: HttpRequest):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request,user)
+            return redirect('home')        
+        
+    else:
+        form = RegisterForm()
+        
+    return render(request, 'registration.html', {"form": form})
