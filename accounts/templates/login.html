@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<header>
-    <title>
-        Login
-    </title>
-</header>
-<body>
-    <h1>Login</h1>
-    {% if error%}
-        <p>{{ error }}</p>
-    {% endif %}
+{% extends "base.html" %}
+
+{% block title %}Login Title{% endblock %}
+
+
+{% block header %}
+<h1>Login Header</h1>
+{% endblock %}
+
+{% block content %}
     <form method="post">
         {% csrf_token %}
         <input type="text" name="username" placeholder="User name"/>
@@ -16,5 +15,4 @@
         <button type="submit">Login</button>
     </form>
     <a href="{% url 'registration' %}">Registration</a>
-</body>
-</html>
+{% endblock %}

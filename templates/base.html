@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        {% block header %}
+        <h1>Header</h1>
+        {% endblock %}
+    </header>
+
+    <!-- Main content -->
+    <main>
+        {% block content %}Content{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        {% block footer %}
+        © {{ now|date:"Y" }} My Django Project
+        {% endblock %}
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
