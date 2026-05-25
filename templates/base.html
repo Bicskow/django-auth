@@ -14,6 +14,16 @@
         {% endblock %}
     </header>
 
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>
+            Message: {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <!-- Main content -->
     <main>
         {% block content %}Content{% endblock %}
