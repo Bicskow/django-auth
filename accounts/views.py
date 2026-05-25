@@ -70,7 +70,7 @@ def registration(request: HttpRequest):
         else:
             messages.error(
             request,
-            form.errors
+            'Please correct the errors below.'
         )        
         
     else:
