@@ -3,16 +3,18 @@
 {% block title %}Login Title{% endblock %}
 
 
-{% block header %}
-<h1>Login Header</h1>
-{% endblock %}
-
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="User name"/>
-        <input type="password" name="password" placeholder="Password"/>
-        <button type="submit">Login</button>
-    </form>
-    <a href="{% url 'registration' %}">Registration</a>
+    <div class="container">
+        <div class="card w-75 mb-3">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="User name"/>
+                    <input type="password" name="password" placeholder="Password"/>
+                    <button type="submit">Login</button>
+                </form>
+                <a href="{% url 'registration' %}">Registration</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
