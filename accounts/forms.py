@@ -19,3 +19,8 @@ class RegisterForm(UserCreationForm):
 
         self.fields["password1"].help_text = ""
         self.fields["password2"].help_text = ""
+
+
+        # Make all fields required
+        for field in self.fields.values():
+            field.required = True
