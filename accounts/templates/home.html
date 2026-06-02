@@ -1,17 +1,223 @@
 {% extends "base.html" %}
 
-{% block title %}Home Title{% endblock %}
-
-
-{% block header %}
-<h1>Home Header</h1>
-{% endblock %}
+{% block title %}Dashboard - Home{% endblock %}
 
 {% block content %}
-<h1>Protected page</h1>
-<p>Hello {{ request.user.username }}</p>
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
+<!-- Hero Section -->
+<section class="bg-dark text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
+    <div class="container">
+        <div class="d-sm-flex align-items-center justify-content-between">
+            <div>
+                <h1>Welcome back, <span class="text-warning">{{ request.user.username }}</span></h1>
+                <p class="lead my-4">
+                    You are successfully logged in. Your session is active and secure. 
+                    Explore your dashboard, manage your profile, and stay in control.
+                </p>
+                <form method="post" action="{% url 'logout' %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </form>
+                <a href="#" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-person-circle"></i> My Profile
+                </a>
+            </div>
+            <img class="img-fluid w-50 d-none d-sm-block" src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/person-check.svg" alt="Dashboard illustration">
+        </div>
+    </div>
+</section>
+
+<!-- Info Cards Section -->
+<section class="p-5">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md">
+                <div class="card bg-dark text-light h-100">
+                    <div class="card-body text-center">
+                        <div class="h1 mb-3">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h3 class="card-title mb-3">
+                            Secure Session
+                        </h3>
+                        <p class="card-text">
+                            Your login session is encrypted and monitored. Each request is authenticated to keep your data safe.
+                        </p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-body text-center">
+                        <div class="h1 mb-3">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <h3 class="card-title mb-3">
+                            Active Sessions
+                        </h3>
+                        <p class="card-text">
+                            Manage all your active devices and sessions. You can revoke any session from your account settings.
+                        </p>
+                        <a href="#" class="btn btn-dark">View Sessions</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="card bg-dark text-light h-100">
+                    <div class="card-body text-center">
+                        <div class="h1 mb-3">
+                            <i class="bi bi-envelope-paper"></i>
+                        </div>
+                        <h3 class="card-title mb-3">
+                            Recent Activity
+                        </h3>
+                        <p class="card-text">
+                            Stay informed about recent logins, password changes, and security events on your account.
+                        </p>
+                        <a href="#" class="btn btn-primary">View Log</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Two Column Section: About Sessions -->
+<section id="learn" class="p-5 bg-dark text-light">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-md p-5">
+                <h2>Understanding <span class="text-warning">Sessions</span></h2>
+                <p class="lead">
+                    Every time you log in, a new session is created. This session holds your authentication state and preferences.
+                </p>
+                <p>
+                    Sessions are stored server-side and linked to a unique identifier sent to your browser as a cookie. 
+                    This ensures that only you can access your protected resources. You can end a session by logging out or after a period of inactivity.
+                </p>
+                <a href="#" class="btn btn-light mt-3"><i class="bi bi-chevron-right"></i> Session Docs</a>
+            </div>
+            <div class="col-md">
+                <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/link-45deg.svg" alt="Session icon" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Second Two Column Section: About Login Security -->
+<section id="learn" class="p-5">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-md">
+                <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/lock.svg" alt="Security icon" class="img-fluid">
+            </div>
+            <div class="col-md p-5">
+                <h2>Login <span class="text-primary">Security</span></h2>
+                <p class="lead">
+                    Your password is hashed and never stored in plain text. We use industry‑standard encryption.
+                </p>
+                <p>
+                    Additional measures like rate limiting and CSRF tokens protect against brute‑force and cross‑site request forgery attacks. 
+                    Always use strong, unique passwords and enable two‑factor authentication if available.
+                </p>
+                <a href="#" class="btn btn-primary mt-3"><i class="bi bi-chevron-right"></i> Security Tips</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Accordion: Frequently Asked Questions about User Accounts -->
+<section id="questions" class="p-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+        <div class="accordion accordion-flush" id="questions-accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q-one" aria-expanded="false">
+                        How long does my session last?
+                    </button>
+                </h2>
+                <div id="q-one" class="accordion-collapse collapse" data-bs-parent="#questions-accordion">
+                    <div class="accordion-body">
+                        By default, your session remains active until you log out or close your browser. 
+                        For security, we also expire sessions after 24 hours of inactivity. You can see your session expiry time in your profile settings.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q-two" aria-expanded="false">
+                        Can I have multiple active sessions?
+                    </button>
+                </h2>
+                <div id="q-two" class="accordion-collapse collapse" data-bs-parent="#questions-accordion">
+                    <div class="accordion-body">
+                        Yes, you can be logged in on multiple devices at the same time. Each device gets its own session. 
+                        You can review and revoke any session from the "Active Sessions" section of your account.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q-three" aria-expanded="false">
+                        What happens if I forget to log out on a public computer?
+                    </button>
+                </h2>
+                <div id="q-three" class="accordion-collapse collapse" data-bs-parent="#questions-accordion">
+                    <div class="accordion-body">
+                        Don’t worry! You can remotely revoke all sessions from your profile page. 
+                        Additionally, after 30 minutes of inactivity, the session will automatically expire. 
+                        Always use private browsing mode on shared devices.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q-four" aria-expanded="false">
+                        How do I change my password?
+                    </button>
+                </h2>
+                <div id="q-four" class="accordion-collapse collapse" data-bs-parent="#questions-accordion">
+                    <div class="accordion-body">
+                        Go to your profile settings and choose "Change Password". You will need to enter your current password and then a new one. 
+                        A confirmation email will be sent to your registered email address.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section (simplified) -->
+<section class="p-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md">
+                <h2 class="text-center mb-4">
+                    Need Help?
+                </h2>
+                <ul class="list-group list-group-flush lead">
+                    <li class="list-group-item">
+                        <span class="fw-bold">Support Email:</span> support@example.com
+                    </li>
+                    <li class="list-group-item">
+                        <span class="fw-bold">Phone:</span> (555) 123-4567
+                    </li>
+                    <li class="list-group-item">
+                        <span class="fw-bold">Office Hours:</span> Mon–Fri, 9 AM – 6 PM
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md">
+                <!-- Placeholder for a map or additional info -->
+                <div class="bg-secondary text-white p-5 text-center rounded">
+                    <i class="bi bi-chat-dots display-4"></i>
+                    <p class="mt-3">We are here to help you with any account issues.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
