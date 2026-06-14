@@ -1,4 +1,6 @@
 import os
+from typing import List
+
 import requests
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.mail.message import EmailMessage
@@ -11,7 +13,7 @@ class MailgunBackend(BaseEmailBackend):
         self.domain = os.getenv('MAILGUN_DOMAIN')
         self.api_url = f"https://api.eu.mailgun.net/v3/{self.domain}/messages"
 
-    def send_messages(self, email_messages):
+    def send_messages(self, email_messages: List[EmailMessage]) -> None:
         for message in email_messages:
             payload = {
                 "from": message.from_email,
