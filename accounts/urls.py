@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from django.contrib.auth import views as auth_views
 from . import views
 
@@ -28,4 +28,8 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+
+
+    path('accounts/', include('allauth.urls')),
+]
 ]
