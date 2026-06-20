@@ -125,6 +125,9 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
+SITE_DOMAIN = os.getenv("SITE_DOMAIN", "localhost:8000")
+SITE_NAME = os.getenv("SITE_NAME", "My Django Project")
+
 # Email verification
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
