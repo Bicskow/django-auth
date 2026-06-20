@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Email{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-5">
+            <div class="card mt-5 shadow-sm text-center">
+                <div class="card-body p-5">
+                    {% if confirmation %}
+                        <div class="mb-4">
+                            <i class="bi bi-envelope-check display-1 text-primary"></i>
+                        </div>
+                        <h2 class="card-title mb-3">Confirm Your Email</h2>
+                        <p class="card-text text-muted mb-4">
+                            Please confirm that <strong>{{ confirmation.email_address.email }}</strong> is your email address.
+                        </p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary w-100 mb-2">Confirm</button>
+                        </form>
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100">Back to Login</a>
+                    {% else %}
+                        <div class="mb-4">
+                            <i class="bi bi-exclamation-triangle display-1 text-warning"></i>
+                        </div>
+                        <h2 class="card-title mb-3">Invalid Confirmation Link</h2>
+                        <p class="card-text text-muted mb-4">
+                            This email confirmation link is invalid or has expired. Please try registering again.
+                        </p>
+                        <a href="{% url 'registration' %}" class="btn btn-primary w-100 mb-2">Register Again</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100">Go to Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
