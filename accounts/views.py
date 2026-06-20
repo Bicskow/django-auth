@@ -5,6 +5,10 @@ from django.views.decorators.http import require_POST
 from django.http import HttpRequest
 from django.contrib import messages
 
+from allauth.account.models import EmailAddress
+from allauth.account.utils import setup_user_email
+from allauth.account.internal.flows.email_verification import send_verification_email_for_user
+
 from .forms import RegisterForm
 
 def login_view(request: HttpRequest):
@@ -12,24 +16,28 @@ def login_view(request: HttpRequest):
         return redirect("home")
 
     if request.method == "POST":
-        user = request.POST["username"]
+        username = request.POST["username"]
         password = request.POST["password"]
 
-        user = authenticate(request, username=user, password=password)
+        user = authenticate(request, username=username, password=password)
 
-        if user != None:
-            messages.success(
-                request,
-                "Successfully logged in!"
-            )
+        if user is not None:
+            email_verified = EmailAddress.objects.filter(
+                user=user, verified=True
+            ).exists()
 
-            login(request, user)
-            return redirect('home')
+            if email_verified:
+                messages.success(request, "Successfully logged in!")
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.error(
+                    request,
+                    "Please verify your email address before logging in."
+                )
+                return redirect('login')
         else:
-            messages.error(
-                request,
-                "Invalid username or password."
-            )
+            messages.error(request, "Invalid username or password.")
 
     return render(request, "login.html")
 
@@ -41,11 +49,7 @@ def home(request):
 @login_required
 def logout_view(request):
     logout(request)
-
-    messages.info(
-        request,
-        "You have been logged out."
-    )
+    messages.info(request, "You have been logged out.")
     return redirect('login')
 
 
@@ -55,27 +59,22 @@ def registration(request: HttpRequest):
 
         if form.is_valid():
             user = form.save()
-            user.backend = "django.contrib.auth.backends.ModelBackend"
-            login(request, user)
+            setup_user_email(request, user, [])
+            send_verification_email_for_user(request, user)
 
             messages.success(
                 request,
-                "Successful registration!"
+                "Registration successful! Please check your email to verify your account."
             )
-            messages.success(
-                request,
-                "Successfully logged in!"
-            )
-
-            return redirect('home')
+            return redirect('email-verification-sent')
         else:
-            messages.error(
-            request,
-            'Please correct the errors below.'
-        )        
-        
+            messages.error(request, 'Please correct the errors below.')
+
     else:
         form = RegisterForm()
-        
-        
+
     return render(request, 'registration.html', {"form": form})
+
+
+def email_verification_sent(request: HttpRequest):
+    return render(request, "verification_sent.html")
