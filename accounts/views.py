@@ -55,7 +55,8 @@ def registration(request: HttpRequest):
 
         if form.is_valid():
             user = form.save()
-            login(request,user)
+            user.backend = "django.contrib.auth.backends.ModelBackend"
+            login(request, user)
 
             messages.success(
                 request,
