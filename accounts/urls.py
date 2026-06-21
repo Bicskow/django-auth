@@ -1,12 +1,12 @@
-from django.urls import include, path
+from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('login/', views.login_view, name = 'login'),
-    path('logout/', views.logout_view, name = 'logout'),
-    path('registration/', views.registration, name = 'registration'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('registration/', views.registration, name='registration'),
     path('email-verification-sent/', views.email_verification_sent, name='email-verification-sent'),
 
     path(
@@ -29,7 +29,4 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-
-
-    path('accounts/', include('allauth.urls')),
 ]
