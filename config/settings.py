@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 

@@ -20,7 +20,7 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-primary w-100 mb-2">Confirm</button>
                         </form>
-                        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100">Back to Login</a>
+                        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary w-100">Back to Login</a>
                     {% else %}
                         <div class="mb-4">
                             <i class="bi bi-exclamation-triangle display-1 text-warning"></i>
@@ -30,7 +30,7 @@
                             This email confirmation link is invalid or has expired. Please try registering again.
                         </p>
                         <a href="{% url 'registration' %}" class="btn btn-primary w-100 mb-2">Register Again</a>
-                        <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100">Go to Login</a>
+                        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary w-100">Go to Login</a>
                     {% endif %}
                 </div>
             </div>
