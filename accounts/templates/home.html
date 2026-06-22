@@ -13,7 +13,7 @@
                     You are successfully logged in. Your session is active and secure. 
                     Explore your dashboard, manage your profile, and stay in control.
                 </p>
-                <form method="post" action="{% url 'logout' %}" class="d-inline">
+                <form method="post" action="{% url 'account_logout' %}" class="d-inline">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary btn-lg me-2">
                         <i class="bi bi-box-arrow-right"></i> Logout
