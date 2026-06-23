@@ -153,6 +153,8 @@ ACCOUNT_FORMS = {
     'signup': 'accounts.forms.CustomSignupForm',
 }
 
+ACCOUNT_ADAPTER = 'accounts.adapters.AccountAdapter'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
