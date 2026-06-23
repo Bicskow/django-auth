@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mt-5 shadow-sm text-center">
+                <div class="card-body p-5">
+                    <h2 class="card-title mb-4">Sign In Via Google</h2>
+                    <p class="card-text text-muted mb-4">
+                        You are about to sign in using your Google account.
+                    </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100">Continue</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
