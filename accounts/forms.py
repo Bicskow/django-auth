@@ -20,5 +20,6 @@ class CustomSignupForm(SignupForm):
         user.last_name = self.cleaned_data.get("last_name")
         user.age = self.cleaned_data.get("age")
         user.country = self.cleaned_data.get("country")
+        user.username = user.email
         user.save()
         return user
