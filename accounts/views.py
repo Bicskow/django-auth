@@ -9,7 +9,6 @@ from allauth.account.models import EmailAddress
 from allauth.account.utils import setup_user_email
 from allauth.account.internal.flows.email_verification import send_verification_email_for_user
 
-from .forms import RegisterForm
 
 def login_view(request: HttpRequest):
     if request.user.is_authenticated:
