@@ -20,9 +20,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
  
 # Copy the rest of the project
 COPY . .
- 
+
 EXPOSE 8000
- 
-# Use runserver locally (we'll switch to gunicorn for production)
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2"]
+
+CMD ["sh", "entrypoint.sh"]
