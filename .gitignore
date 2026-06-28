@@ -2,3 +2,5 @@ venv/
 *.pyc
 db.sqlite3
 .env
+.env_docker
+staticfiles/
