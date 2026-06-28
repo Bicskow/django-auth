@@ -311,7 +311,7 @@ The `MailgunBackend` class in `common/email_backends.py` demonstrates:
 
 ## License
 
-This project is part of my portfolio and is not intended for public use without permission.
+MIT License - see LICENSE file for details.
 
 ---
 
