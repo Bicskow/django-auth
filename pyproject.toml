@@ -1,0 +1,24 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+
+python_files = [
+    "tests.py",
+    "test_*.py",
+    "*_tests.py"
+]
+
+python_classes = "Test*"
+python_functions = "test_*"
+
+testpaths = [
+    "accounts",
+    "common"
+]
+
+addopts = "-ra --strict-markers"
+
+markers = [
+    "slow: tests that take more than a few seconds",
+    "integration: tests requiring external services",
+    "e2e: end-to-end tests"
+]
