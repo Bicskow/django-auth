@@ -1,0 +1,17 @@
+name: PR Test Command
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  test:
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/test')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hello World Test
+        run: echo "Hello World"
