@@ -8,5 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Hello World Test
-        run: echo "Hello World"
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+          SECRET_KEY: test-secret-key-for-ci
+          MAILGUN_API_KEY: test
+          MAILGUN_DOMAIN: test.com
+          DEFAULT_FROM_EMAIL: test@test.com
+        run: |
+          pytest
