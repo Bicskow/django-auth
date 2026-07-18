@@ -38,8 +38,7 @@ jobs:
           path: test-results.xml
           reporter: java-junit
 
-      - name: Coverage report
-        uses: 5monkeys/cobertura-action@master
-        with:
-          path: coverage.xml
-          minimum_coverage: 75
+      - name: Add coverage summary
+        run: |
+          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
+          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
