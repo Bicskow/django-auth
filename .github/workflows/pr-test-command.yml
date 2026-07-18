@@ -39,9 +39,6 @@ jobs:
           reporter: java-junit
 
       - name: Publish coverage report
-        uses: dorny/test-reporter@v1
-        if: always()
+        uses: jandelgado/gh-action-coverage@v1
         with:
-          name: Django Auth Coverage
           path: coverage.xml
-          reporter: cobertura
