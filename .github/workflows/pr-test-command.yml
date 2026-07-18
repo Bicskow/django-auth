@@ -1,6 +1,7 @@
 name: PR Test Command
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -8,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -31,7 +32,7 @@ jobs:
           pytest --cov=accounts --cov=common --cov-report=term-missing --cov-report=xml:coverage.xml --junitxml=test-results.xml
 
       - name: Publish test results
-        uses: dorny/test-reporter@v3
+        uses: dorny/test-reporter@v2
         if: always()
         with:
           name: Django Auth Test Results
