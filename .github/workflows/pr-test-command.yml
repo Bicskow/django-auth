@@ -39,6 +39,8 @@ jobs:
           reporter: java-junit
 
       - name: Publish coverage report
-        uses: jandelgado/gh-action-coverage@v1
+        uses: Irongut/CodeCoverageSummary@v1
         with:
-          path: coverage.xml
+          filename: coverage.xml
+          badge: true
+          failBelowMin: false
