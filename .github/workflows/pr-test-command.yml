@@ -28,7 +28,7 @@ jobs:
           MAILGUN_DOMAIN: test.com
           DEFAULT_FROM_EMAIL: test@test.com
         run: |
-          pytest --cov=accounts --cov=common --cov-report=term-missing --junitxml=test-results.xml >> $GITHUB_STEP_SUMMARY
+          pytest --cov=accounts --cov=common --cov-report=term-missing --cov-report=xml:coverage.xml --junitxml=test-results.xml
 
       - name: Publish test results
         uses: dorny/test-reporter@v1
@@ -37,3 +37,11 @@ jobs:
           name: Django Auth Test Results
           path: test-results.xml
           reporter: java-junit
+
+      - name: Publish coverage report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Django Auth Coverage
+          path: coverage.xml
+          reporter: cobertura
