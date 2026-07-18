@@ -39,8 +39,9 @@ jobs:
           reporter: java-junit
 
       - name: Publish coverage report
-        uses: Irongut/CodeCoverageSummary@v1
+        uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: coverage.xml
           badge: true
-          failBelowMin: false
+          format: markdown
+          output: both
