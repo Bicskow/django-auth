@@ -28,4 +28,4 @@ jobs:
           MAILGUN_DOMAIN: test.com
           DEFAULT_FROM_EMAIL: test@test.com
         run: |
-          pytest
+          pytest --cov=accounts --cov=common --cov-report=term-missing >> $GITHUB_STEP_SUMMARY
