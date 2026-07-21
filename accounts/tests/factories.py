@@ -7,6 +7,7 @@ CustomUser = get_user_model()
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = CustomUser
+        skip_postgeneration_save = True
 
     email = factory.Sequence(lambda n: f"user{n}@example.com")
     username = factory.SelfAttribute("email")
@@ -14,3 +15,9 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = "Doe"
     age = 30
     country = "PL"
+
+    @factory.post_generation
+    def password(obj, create, extracted, **kwargs):
+        obj.set_password(extracted or "strongpass123!")
+        if create:
+            obj.save()
