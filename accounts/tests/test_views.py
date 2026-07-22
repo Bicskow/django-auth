@@ -31,7 +31,7 @@ class TestloginView:
         assert response.wsgi_request.user.is_authenticated
 
 
-    def test_post_invalid_credentials(self, client: Client, verified_user):
+    def test_post_invalid_credentials(self, client: Client, verified_user, social_app):
         response = client.post(reverse("account_login"),
                     {
                         "login": verified_user.email,
