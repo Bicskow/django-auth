@@ -54,3 +54,12 @@ class TestloginView:
         assert not response.wsgi_request.user.is_authenticated
         messages = list(get_messages(response.wsgi_request))
         assert any("Confirmation email sent" in str(m) for m in messages)
+
+
+class TestHomeView:
+
+    def test_requires_login(self, client):
+        response = client.get(reverse("home"))
+
+        assert response.status_code == 302
+        assert reverse("account_login") in response.url
