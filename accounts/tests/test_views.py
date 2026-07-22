@@ -63,3 +63,10 @@ class TestHomeView:
 
         assert response.status_code == 302
         assert reverse("account_login") in response.url
+
+
+    def test_authenticated_user_sees_home(self, auth_client):
+        response = auth_client.get(reverse("home"))
+
+        assert response.status_code == 200
+        assert response.templates[0].name == "home.html"
