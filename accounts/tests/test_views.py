@@ -13,7 +13,7 @@ class TestloginView:
 
     
     @pytest.mark.django_db
-    def test_login_get_renders_template(self, client: Client):
+    def test_login_get_renders_template(self, client: Client, social_app):
         response = client.get(reverse("account_login"))
         assert response.status_code == 200
         assert response.templates[0].name == "account/login.html"
