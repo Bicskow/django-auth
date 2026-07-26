@@ -70,3 +70,37 @@ class TestHomeView:
 
         assert response.status_code == 200
         assert response.templates[0].name == "home.html"
+
+
+class TestLogoutView:
+
+    def test_post_logs_out(self, auth_client):
+        response = auth_client.post(reverse("account_logout"))
+
+        assert response.status_code == 302
+        assert response.url == reverse("account_login")
+        assert not response.wsgi_request.user.is_authenticated
+
+
+    def test_get_returns_405(self, auth_client):
+        response = auth_client.get(reverse("account_logout"))
+        assert response.status_code == 405
+
+
+    def test_requires_login(self, client):
+        response = client.post(reverse("account_logout"))
+        
+        assert response.status_code == 302
+        assert reverse("account_login") in response.url
+
+    
+    def test_logout_sets_info_message(self, auth_client):
+        response = auth_client.post(reverse("account_logout"), follow=True)
+
+        messages = list(get_messages(response.wsgi_request))
+
+        assert response.status_code == 200
+        assert any("logged out" in str(m).lower() for m in messages)
+
+
+
