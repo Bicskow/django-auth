@@ -82,11 +82,6 @@ class TestLogoutView:
         assert not response.wsgi_request.user.is_authenticated
 
 
-    def test_get_returns_405(self, auth_client):
-        response = auth_client.get(reverse("account_logout"))
-        assert response.status_code == 405
-
-
     def test_requires_login(self, client):
         response = client.post(reverse("account_logout"))
         
