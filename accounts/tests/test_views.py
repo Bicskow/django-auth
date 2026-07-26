@@ -2,7 +2,11 @@ import pytest
 from django.test import Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
+from django.contrib.auth import get_user_model
+from django.conf import settings
 
+
+CustomUser = get_user_model()
 
 class TestloginView:
 
@@ -96,6 +100,59 @@ class TestLogoutView:
 
         assert response.status_code == 200
         assert any("logged out" in str(m).lower() for m in messages)
+
+
+class TestRegistrationView:
+
+    @pytest.mark.django_db
+    def test_registration_get_renders_form(self, client):
+        response = client.get(reverse("account_signup"))
+
+        assert response.status_code == 200
+        assert "signup" in response.templates[0].name
+        assert "form" in response.context
+
+
+    @pytest.mark.django_db
+    def test_post_valid_data(self, client, mailoutbox):
+        # Force the in-memory backend so we can inspect the outbox.
+        settings.EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+
+        response = client.post(reverse("account_signup"),
+                                data={
+                                    'email': 'newuser@example.com',
+                                    'first_name': 'New',
+                                    'last_name': 'User',
+                                    'age': 33,
+                                    'country': 'Hungary',
+                                    'password1': 'k1k1k1k1',
+                                    'password2': 'k1k1k1k1'
+                                }
+                               )
+
+        assert response.status_code == 302
+        assert response.url == reverse("account_email_verification_sent")
+        assert CustomUser.objects.filter(email="newuser@example.com").exists()
+        assert len(mailoutbox) == 1
+
+
+    @pytest.mark.django_db
+    def test_post_invalid_data(self, client):
+        response = client.post(reverse("account_signup"),
+                        data={
+                            'email': 'newuser@example.com',
+                            'first_name': 'New',
+                            'last_name': 'User',
+                            'age': 33,
+                            'country': 'Hungary',
+                            'password1': 'k1k1k1k1',
+                            'password2': 'wrongpass'
+                        }
+                        )
+        assert response.status_code == 200
+        assert 'form' in response.context
+        assert response.context['form'].errors
+        assert not CustomUser.objects.filter(email="newuser@example.com").exists()
 
 
 
