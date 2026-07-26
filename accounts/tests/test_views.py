@@ -89,7 +89,7 @@ class TestLogoutView:
         assert reverse("account_login") in response.url
 
     
-    def test_logout_sets_info_message(self, auth_client):
+    def test_logout_sets_info_message(self, auth_client, social_app):
         response = auth_client.post(reverse("account_logout"), follow=True)
 
         messages = list(get_messages(response.wsgi_request))
