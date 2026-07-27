@@ -155,4 +155,14 @@ class TestRegistrationView:
         assert not CustomUser.objects.filter(email="newuser@example.com").exists()
 
 
+class TestEmailVerificationView:
+
+    @pytest.mark.django_db
+    def test_email_verification_sent_view(self, client):
+        response = client.get(reverse("account_email_verification_sent"))
+
+        assert response.status_code == 200
+        assert "account/verification_sent.html" in response.templates[0].name
+
+
 
