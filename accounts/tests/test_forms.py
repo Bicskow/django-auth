@@ -98,3 +98,20 @@ class TestCustomSignupForm:
         assert form.fields["password2"].help_text == ""
 
 
+    @pytest.mark.django_db
+    def test_form_requires_first_and_last_name(self):
+        data = {
+                "email": "jane@example.com",
+                "first_name": "",
+                "last_name": "",
+                "age": 28,
+                "country": "Poland",
+                "password1": "Str0ng!Pass1",
+                "password2": "Str0ng!Pass1"
+                 }
+        form = CustomSignupForm(data)
+        assert not form.is_valid()
+        assert "first_name" in form.errors
+        assert "last_name" in form.errors
+
+
