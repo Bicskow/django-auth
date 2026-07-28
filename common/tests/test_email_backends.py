@@ -58,6 +58,7 @@ class TestMailgunBackend:
         assert body_params["text"][0] == "Body"
 
 
+    @responses.activate
     def test_send_messages_raises_on_401(self, monkeypatch):
         monkeypatch.setenv("MAILGUN_API_KEY", "bad")
         monkeypatch.setenv("MAILGUN_DOMAIN", "sandbox.test")
