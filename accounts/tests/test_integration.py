@@ -62,3 +62,37 @@ class TestRegistrationAndLoginFlow:
         assert response.status_code == 302
         assert response.url == reverse("home")
         assert response.wsgi_request.user.is_authenticated
+
+
+    def test_logout_after_login(self, client, db):
+        """Test login then logout flow."""
+        # Create and verify user
+        user = User.objects.create_user(
+            username='logout@example.com',
+            email='logout@example.com',
+            password='TestPass123!',
+        )
+        EmailAddress.objects.create(
+            user=user,
+            email=user.email,
+            verified=True,
+            primary=True
+        )
+
+        # Login
+        client.post(reverse('account_login'), {
+            'login': 'logout@example.com',
+            'password': 'TestPass123!',
+        })
+
+        # Verify we can access home
+        response = client.get(reverse('home'))
+        assert response.status_code == 200
+
+        # Logout
+        response = client.post(reverse('account_logout'))
+        assert response.status_code == 302
+
+        # Verify we can no longer access home
+        response = client.get(reverse('home'))
+        assert response.status_code == 302
