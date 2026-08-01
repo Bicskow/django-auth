@@ -1,5 +1,4 @@
 import pytest
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
 from django.test import Client
@@ -114,12 +113,9 @@ class TestRegistrationView:
 
     @pytest.mark.django_db
     def test_post_valid_data(self, client, mailoutbox):
-        # Force the in-memory backend so we can inspect the outbox.
-        settings.EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
-
         response = client.post(reverse("account_signup"),
                                 data={
-                                    'email': 'newuser@example.com',
+                                    'email': 'newuser2@example.com',
                                     'first_name': 'New',
                                     'last_name': 'User',
                                     'age': 33,
@@ -131,7 +127,7 @@ class TestRegistrationView:
 
         assert response.status_code == 302
         assert response.url == reverse("account_email_verification_sent")
-        assert CustomUser.objects.filter(email="newuser@example.com").exists()
+        assert CustomUser.objects.filter(email="newuser2@example.com").exists()
         assert len(mailoutbox) == 1
 
 
