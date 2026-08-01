@@ -44,7 +44,7 @@ class TestCustomUserModel:
         assert usr.username == "test@example.com"
         assert usr.first_name == ""
         assert usr.last_name == ""
-        assert usr.age == None
+        assert usr.age is None
         assert usr.country == ""
         assert usr.is_active is True
         assert usr.is_staff is False
