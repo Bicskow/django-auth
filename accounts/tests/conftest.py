@@ -2,6 +2,7 @@ import pytest
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
+
 from .factories import UserFactory
 
 
@@ -38,4 +39,4 @@ def social_app(db):
 def auth_client(client, verified_user):
     client.force_login(verified_user)
     return client
-    
+

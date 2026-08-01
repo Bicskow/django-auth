@@ -1,7 +1,7 @@
 import pytest
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.conf import settings
 
 pytestmark = pytest.mark.django_db
 CustomUser = get_user_model()
@@ -22,7 +22,7 @@ class TestCustomUserModel:
             age = 30,
             country = "PL"
         )
-        
+
         assert usr.email == "test@example.com"
         assert usr.username == "username"
         assert usr.check_password("12345")
@@ -53,7 +53,7 @@ class TestCustomUserModel:
 
     def test_create_user_wo_required_argument(self):
         with pytest.raises(TypeError):
-            use = CustomUser.objects.create_user(
+            CustomUser.objects.create_user(
                 email = "test@example.com"
             )
 

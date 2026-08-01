@@ -1,10 +1,9 @@
 import pytest
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.test import Client
 from django.urls import reverse
-from django.contrib.messages import get_messages
-from django.contrib.auth import get_user_model
-from django.conf import settings
-
 
 CustomUser = get_user_model()
 
@@ -15,7 +14,7 @@ class TestloginView:
         assert response.status_code == 302
         assert response.url == reverse("home")
 
-    
+
     @pytest.mark.django_db
     def test_login_get_renders_template(self, client: Client, social_app):
         response = client.get(reverse("account_login"))
@@ -29,7 +28,7 @@ class TestloginView:
                         "login": verified_user.email,
                         "password": "strongpass123!"
                     })
-        
+
         assert response.status_code == 302
         assert response.url == reverse("home")
         assert response.wsgi_request.user.is_authenticated
@@ -45,7 +44,7 @@ class TestloginView:
         assert response.status_code == 200
         assert not response.wsgi_request.user.is_authenticated
 
-    
+
     def test_login_requires_email_verification(self, client: Client, user):
         response = client.post(reverse("account_login"),
                     {
@@ -88,11 +87,11 @@ class TestLogoutView:
 
     def test_requires_login(self, client):
         response = client.post(reverse("account_logout"))
-        
+
         assert response.status_code == 302
         assert reverse("account_login") in response.url
 
-    
+
     def test_logout_sets_info_message(self, auth_client, social_app):
         response = auth_client.post(reverse("account_logout"), follow=True)
 

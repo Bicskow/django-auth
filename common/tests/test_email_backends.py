@@ -1,8 +1,11 @@
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import patch, Mock
-from django.core.mail import EmailMessage, EmailMultiAlternatives
-from common.email_backends import MailgunBackend
 import responses
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+
+from common.email_backends import MailgunBackend
+
 
 class TestMailgunBackend:
     @patch("common.email_backends.requests.post")
@@ -47,11 +50,11 @@ class TestMailgunBackend:
 
         assert len(responses.calls) == 1
         request = responses.calls[0].request
-        
+
         # Parse the form-encoded body and verify email fields
         from urllib.parse import parse_qs
         body_params = parse_qs(request.body)
-        
+
         assert body_params["from"][0] == "from@test.com"
         assert body_params["to"][0] == "to@test.com"
         assert body_params["subject"][0] == "Hi"
@@ -120,7 +123,7 @@ class TestMailgunBackend:
         assert call_kwargs["data"]["bcc"] == "bcc@example.com"
         assert call_kwargs["data"]["h:Reply-To"] == "reply@example.com"
 
-    
+
     @patch("common.email_backends.requests.post")
     def test_multiple_recipients(self, mock_post):
         mock_post.return_value = Mock(status_code=200)

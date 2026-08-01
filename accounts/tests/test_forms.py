@@ -1,6 +1,6 @@
 import pytest
+
 from accounts.forms import CustomSignupForm
-from django.contrib.auth import get_user_model
 
 
 class TestCustomSignupForm:

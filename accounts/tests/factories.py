@@ -17,7 +17,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     country = "PL"
 
     @factory.post_generation
-    def password(obj, create, extracted, **kwargs):
+    def password(obj, create, extracted, **kwargs):  # noqa: N805
         obj.set_password(extracted or "strongpass123!")
         if create:
             obj.save()
