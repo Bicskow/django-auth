@@ -26,6 +26,14 @@ A comprehensive Django authentication system featuring email/password registrati
 - **Static Files Handling** - WhiteNoise for static file serving in production
 - **CSRF Protection** - Configured trusted origins for secure form submissions
 
+### Testing & Code Quality
+- **Comprehensive Test Suite** - 50+ pytest tests covering models, forms, views, URLs, and full integration flows
+- **Factory-based Test Data** - factory_boy with randomized data generation (Faker)
+- **HTTP Mocking** - responses library for Mailgun API call testing
+- **Static Type Checking** - mypy with django-stubs plugin across the entire codebase
+- **Automated Linting** - ruff with Django-specific rules (import sorting, naming conventions)
+- **CI/CD Pipeline** - GitHub Actions runs linting, type checking, and tests with coverage gates on every PR
+
 ### UI/UX
 - **Bootstrap 5** - Responsive design with crispy-bootstrap5
 - **django-crispy-forms** - Beautiful, clean form rendering
@@ -37,24 +45,38 @@ A comprehensive Django authentication system featuring email/password registrati
 
 ```
 django-auth/
+├── .github/
+│   └── workflows/
+│       └── pr-test-command.yml   # CI: lint, type-check, test, coverage
 ├── accounts/                  # Main authentication app
 │   ├── adapters.py           # Custom allauth adapter (email as username)
 │   ├── forms.py              # Registration form with extended fields
 │   ├── models.py             # CustomUser model
 │   ├── urls.py               # App routing
 │   ├── views.py              # Authentication views
+│   ├── tests/                # Test suite (pytest)
+│   │   ├── conftest.py       # Fixtures (user, auth_client, social_app)
+│   │   ├── factories.py      # factory_boy UserFactory
+│   │   ├── test_models.py
+│   │   ├── test_forms.py
+│   │   ├── test_views.py
+│   │   ├── test_urls.py
+│   │   └── test_integration.py    # Full registration-to-login flows
 │   └── templates/           # App templates
 │       ├── account/          # allauth templates
 │       ├── socialaccount/    # Social auth templates
 │       └── home.html         # Authenticated user homepage
 │
 ├── common/                   # Shared modules
-│   └── email_backends.py     # Mailgun HTTP API backend
+│   ├── email_backends.py     # Mailgun HTTP API backend
+│   └── tests/
+│       └── test_email_backends.py  # Mailgun backend tests
 │
 ├── config/                   # Django configuration
 │   ├── settings.py          # Development settings
 │   ├── settings_docker.py   # Docker development settings
 │   ├── settings_production.py # Production settings
+│   ├── settings_test.py     # Test settings (in-memory SQLite)
 │   ├── urls.py              # Project URLs
 │   ├── asgi.py              # ASGI configuration
 │   └── wsgi.py              # WSGI configuration
@@ -65,6 +87,7 @@ django-auth/
 ├── docker-compose.yml        # Development services (web + PostgreSQL)
 ├── Dockerfile               # Development Docker image
 ├── Dockerfile.prod          # Production Docker image
+├── pyproject.toml           # Pytest, ruff, mypy configuration
 ├── requirements.txt         # Python dependencies
 ├── render.yaml              # Render cloud deployment config
 └── .env_*                   # Environment files
@@ -76,16 +99,19 @@ django-auth/
 
 | Component | Technology |
 |-----------|------------|
-| **Backend** | Django 6.0.5 |
+| **Backend** | Django 6.0.5, Python 3.12 |
 | **Authentication** | django-allauth 65.18.0 |
-| **Database** | PostgreSQL 16 (Docker) |
+| **Database** | PostgreSQL 16 (Docker), SQLite (tests) |
 | **Forms** | django-crispy-forms 2.6 + crispy-bootstrap5 |
-| **Email** | Mailgun HTTP API |
+| **Email** | Mailgun HTTP API (REST) |
 | **Containerization** | Docker + Docker Compose |
-| **Deployment** | Render Cloud |
+| **Deployment** | Render Cloud (Docker runtime) |
 | **Static Files** | WhiteNoise 6.6.0 |
 | **Web Server** | Gunicorn 21.2.0 |
 | **OAuth Provider** | Google OAuth 2.0 |
+| **Testing** | pytest 9.1, pytest-django, pytest-cov, factory_boy, Faker, responses |
+| **Code Quality** | ruff 0.16 (linter), mypy 1.15 (type checker), django-stubs |
+| **CI/CD** | GitHub Actions (lint → type-check → test → coverage gate ≥80%) |
 
 ---
 
@@ -165,6 +191,34 @@ django-auth/
     - Configured separate settings files for different environments
     - Set up proper ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS
 
+### Testing & Code Quality
+
+12. **pytest & Test Architecture**
+    - Structured tests by domain (models, forms, views, URLs, integration) using pytest discovery
+    - Used `conftest.py` fixtures for reusable test setup (user, verified_user, auth_client)
+    - Leveraged `pytest-django` for Django ORM integration and `pytest-cov` for coverage
+    - Built `factory_boy` factories with Faker for randomized, realistic test data
+    - Mocked external HTTP calls with `responses` library to test Mailgun API integration
+    - Ran tests against in-memory SQLite for speed without external dependencies
+
+13. **Static Type Checking (mypy)**
+    - Configured mypy with `django-stubs` for full Django type inference
+    - Added type annotations across all views, signals, and model methods
+    - Understood how type stubs catch real-world Django bugs at analysis time
+    - Used per-file `type: ignore` comments only where strictly necessary
+
+14. **Automated Linting (ruff)**
+    - Configured ruff with Django-aware rules (DJ, N, I import sorting)
+    - Enforced consistent import ordering, naming conventions, and line length
+    - Learned to integrate ruff as a pre-commit gate via CI rather than a manual step
+
+15. **CI/CD with GitHub Actions**
+    - Designed a workflow that runs lint → type check → test → coverage in sequence
+    - Published JUnit test results as check run annotations on every PR
+    - Added coverage summaries to the workflow run page via `GITHUB_STEP_SUMMARY`
+    - Set an 80% coverage threshold to prevent untested code from merging
+    - Ran CI on every pull request to catch regressions before merge
+
 ---
 
 ## Quick Start
@@ -198,8 +252,19 @@ django-auth/
    ```bash
    python manage.py runserver
    ```
-   
+
    Access at: http://localhost:8000
+
+5. **Run tests:**
+   ```bash
+   pytest --cov=accounts --cov=common --cov-report=term-missing
+   ```
+
+6. **Lint & type-check:**
+   ```bash
+   ruff check .
+   mypy .
+   ```
 
 ### Docker Development
 
