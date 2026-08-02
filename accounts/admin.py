@@ -6,4 +6,4 @@ from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    list_display = (*UserAdmin.list_display, "age")
+    list_display = (*UserAdmin.list_display, "age")  # type: ignore[misc]
