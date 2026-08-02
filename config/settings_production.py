@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.parse(
-        os.environ.get("DATABASE_URL", ""),
+        os.environ.get("DATABASE_URL"),  # type: ignore[arg-type]
         conn_max_age=600,       # Keep connections alive for 10 mins
         conn_health_checks=True,
     )
