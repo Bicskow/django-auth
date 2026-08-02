@@ -24,6 +24,9 @@ jobs:
       - name: Lint
         run: ruff check .
 
+      - name: Type check
+        run: mypy .
+
       - name: Run tests
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres

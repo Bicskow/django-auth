@@ -11,7 +11,7 @@ class TestloginView:
     def test_get_authenticated_user_redirects(self, auth_client):
         response = auth_client.get(reverse("account_login"))
         assert response.status_code == 302
-        assert response.url == reverse("home")
+        assert response.headers["Location"] == reverse("home")
 
 
     @pytest.mark.django_db
@@ -29,7 +29,7 @@ class TestloginView:
                     })
 
         assert response.status_code == 302
-        assert response.url == reverse("home")
+        assert response.headers["Location"] == reverse("home")
         assert response.wsgi_request.user.is_authenticated
 
 
@@ -52,7 +52,7 @@ class TestloginView:
                     })
 
         assert response.status_code == 302
-        assert response.url == reverse("account_email_verification_sent")
+        assert response.headers["Location"] == reverse("account_email_verification_sent")
         assert not response.wsgi_request.user.is_authenticated
         messages = list(get_messages(response.wsgi_request))
         assert any("Confirmation email sent" in str(m) for m in messages)
@@ -64,7 +64,7 @@ class TestHomeView:
         response = client.get(reverse("home"))
 
         assert response.status_code == 302
-        assert reverse("account_login") in response.url
+        assert reverse("account_login") in response.headers["Location"]
 
 
     def test_authenticated_user_sees_home(self, auth_client):
@@ -80,7 +80,7 @@ class TestLogoutView:
         response = auth_client.post(reverse("account_logout"))
 
         assert response.status_code == 302
-        assert response.url == reverse("account_login")
+        assert response.headers["Location"] == reverse("account_login")
         assert not response.wsgi_request.user.is_authenticated
 
 
@@ -88,7 +88,7 @@ class TestLogoutView:
         response = client.post(reverse("account_logout"))
 
         assert response.status_code == 302
-        assert reverse("account_login") in response.url
+        assert reverse("account_login") in response.headers["Location"]
 
 
     def test_logout_sets_info_message(self, auth_client, social_app):
@@ -126,7 +126,7 @@ class TestRegistrationView:
                                )
 
         assert response.status_code == 302
-        assert response.url == reverse("account_email_verification_sent")
+        assert response.headers["Location"] == reverse("account_email_verification_sent")
         assert CustomUser.objects.filter(email="newuser2@example.com").exists()
         assert len(mailoutbox) == 1
 

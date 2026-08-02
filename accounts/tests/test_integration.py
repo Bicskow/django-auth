@@ -23,7 +23,7 @@ class TestRegistrationAndLoginFlow:
             })
 
         assert response.status_code == 302
-        assert response.url == reverse("account_email_verification_sent")
+        assert response.headers["Location"] == reverse("account_email_verification_sent")
 
         # Step 2: User exists in DB but email is unverified
         user = User.objects.get(email="newuser@example.com")
@@ -59,7 +59,7 @@ class TestRegistrationAndLoginFlow:
             "password": "StrongPass123!",
         })
         assert response.status_code == 302
-        assert response.url == reverse("home")
+        assert response.headers["Location"] == reverse("home")
         assert response.wsgi_request.user.is_authenticated
 
 

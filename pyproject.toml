@@ -31,3 +31,12 @@ exclude = ["**/migrations/*.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "DJ", "UP", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = false
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "config.settings"
