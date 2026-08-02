@@ -1,5 +1,5 @@
 import os
-from typing import List
+from collections.abc import Sequence
 
 import requests
 from django.core.mail.backends.base import BaseEmailBackend
@@ -13,7 +13,7 @@ class MailgunBackend(BaseEmailBackend):
         self.domain = os.getenv('MAILGUN_DOMAIN')
         self.api_url = f"https://api.eu.mailgun.net/v3/{self.domain}/messages"
 
-    def send_messages(self, email_messages: List[EmailMessage]) -> None:
+    def send_messages(self, email_messages: Sequence[EmailMessage]) -> int:
         for message in email_messages:
             payload = {
                 "from": message.from_email,
@@ -63,9 +63,10 @@ class MailgunBackend(BaseEmailBackend):
             if response.status_code != 200:
                 if response.status_code == 401:
                     raise Exception(
-                        f"Mailgun API authentication error: Invalid API key. "
-                        f"Check your MAILGUN_API_KEY environment variable."
+                        "Mailgun API authentication error: Invalid API key. "
+                        "Check your MAILGUN_API_KEY environment variable."
                     )
                 raise Exception(
                     f"Mailgun API error: {response.status_code} - {response.text}"
                 )
+        return 1

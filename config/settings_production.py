@@ -10,10 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
-from dotenv import load_dotenv
-import dj_database_url
 import os
+from pathlib import Path
+
+import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -92,7 +93,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.parse(
-        os.environ.get("DATABASE_URL"),
+        os.environ.get("DATABASE_URL", ""),
         conn_max_age=600,       # Keep connections alive for 10 mins
         conn_health_checks=True,
     )
@@ -207,7 +208,7 @@ EMAIL_TIMEOUT = 10
 
 
 # ─── HTTPS / Security Headers ─────────────────────────────────────────────────
- 
+
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
@@ -228,7 +229,7 @@ CSRF_TRUSTED_ORIGINS = [
     for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
     if origin
 ]
- 
+
 
 # Logging
 
